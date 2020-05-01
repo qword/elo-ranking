@@ -30,6 +30,7 @@ Some usage examples:
     Position 001, name: Jacquelynn, rating: 1063.93
     Position 002, name: Odette, rating: 1061.52
     Position 003, name: Brice, rating: 1055.01
+    ...
     ```
 * `--matches 7`
     ```
