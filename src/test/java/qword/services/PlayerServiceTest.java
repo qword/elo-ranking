@@ -2,14 +2,19 @@ package qword.services;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import qword.domain.MatchResult;
 import qword.domain.Player;
 import qword.domain.dto.Match;
+import qword.domain.dto.Name;
 import qword.repositories.PlayerRepository;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentCaptor.*;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,9 +32,9 @@ class PlayerServiceTest {
         final PlayerRepository mockRepository = mock(PlayerRepository.class);
         when(mockRepository.getPlayerById(1)).thenReturn(playerHuman);
         when(mockRepository.getPlayerById(2)).thenReturn(playerCPU);
+        final PlayerService underTest = new PlayerService(mockRepository, 30, 400, 1000);
 
         //when
-        final PlayerService underTest = new PlayerService(mockRepository, 30, 400);
         underTest.addMatch(new Match(2, 1));
 
         //then
@@ -53,10 +58,9 @@ class PlayerServiceTest {
         final PlayerRepository mockRepository = mock(PlayerRepository.class);
         when(mockRepository.getPlayerById(1)).thenReturn(playerHuman);
         when(mockRepository.getPlayerById(2)).thenReturn(playerCPU);
-        final Match match = new Match(2, 1);
+        final PlayerService underTest = new PlayerService(mockRepository, 32, 400, 1000);
 
         //when
-        final PlayerService underTest = new PlayerService(mockRepository, 32, 400);
         underTest.addMatch(new Match(1, 2));
         underTest.addMatch(new Match(2, 1));
         underTest.addMatch(new Match(2, 1));
@@ -84,5 +88,22 @@ class PlayerServiceTest {
         assertEquals(1178.60d, cpuResults.get(1).getRatingAfterMatch(), TEST_ROUNDING);
         assertEquals(1174.83d, cpuResults.get(2).getRatingAfterMatch(), TEST_ROUNDING);
         assertEquals(1170.90, cpuResults.get(3).getRatingAfterMatch(), TEST_ROUNDING);
+    }
+
+    @Test
+    @DisplayName("Should add a new player")
+    void shouldAddNewPlayer() {
+        final Name inputName = new Name(5, "Balrog");
+        final PlayerRepository mockRepository = mock(PlayerRepository.class);
+        final ArgumentCaptor<Player> playerCaptor = forClass(Player.class);
+        final PlayerService underTest = new PlayerService(mockRepository, 0, 0, 0);
+
+        //when
+        underTest.addPlayer(inputName);
+
+        // then
+        verify(mockRepository).addPlayer(playerCaptor.capture());
+        assertEquals("Balrog", playerCaptor.getValue().getName(), "Player should have correct name");
+        assertEquals(5, playerCaptor.getValue().getId(), "Player should have correct name");
     }
 }

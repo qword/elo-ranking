@@ -3,6 +3,7 @@ package qword.services;
 import qword.domain.MatchResult;
 import qword.domain.Player;
 import qword.domain.dto.Match;
+import qword.domain.dto.Name;
 import qword.repositories.PlayerRepository;
 
 import static java.lang.Math.pow;
@@ -12,11 +13,21 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
     private final int kFactor;
     private final int eloConstant;
+    private final int initialRating;
 
-    public PlayerService(final PlayerRepository playerRepository, final int kFactor, final int eloConstant) {
+    public PlayerService(final PlayerRepository playerRepository,
+                         final int kFactor,
+                         final int eloConstant,
+                         final int initialRating) {
         this.playerRepository = playerRepository;
         this.kFactor = kFactor;
         this.eloConstant = eloConstant;
+        this.initialRating = initialRating;
+    }
+
+    public void addPlayer(final Name playerName) {
+        Player player = new Player(playerName.getId(), initialRating, playerName.getValue());
+        playerRepository.addPlayer(player);
     }
 
     public void addMatch(final Match match) {
