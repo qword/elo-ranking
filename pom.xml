@@ -18,6 +18,7 @@
         <junit.version>5.6.2</junit.version>
         <surefire.version>3.0.0-M4</surefire.version>
         <mockito.version>3.3.3</mockito.version>
+        <google-options.version>1.0.0</google-options.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
     </properties>
 
@@ -41,7 +42,11 @@
                 <version>${mockito.version}</version>
                 <scope>test</scope>
             </dependency>
-
+            <dependency>
+                <groupId>com.github.pcj</groupId>
+                <artifactId>google-options</artifactId>
+                <version>${google-options.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -49,6 +54,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pcj</groupId>
+            <artifactId>google-options</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
