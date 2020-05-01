@@ -45,4 +45,11 @@ public class Player {
     public List<MatchResult> getAllMatchResults() {
         return new ArrayList<>(results);
     }
+
+    public int getWinLossesDifference() {
+        int wins = (int)results.stream().filter(MatchResult::isWon).count();
+        int losses = results.size() - wins;
+
+        return wins - losses;
+    }
 }
